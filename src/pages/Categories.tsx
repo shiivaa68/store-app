@@ -1,73 +1,45 @@
-// src/pages/Categories.tsx
-
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { fetchProductsByCategory, type Product } from "../api/products";
+import { fetchCategories } from "../api/products";
+import { Link } from "react-router-dom";
 
 export default function Categories() {
-  const [category, setCategory] = useState("all");
-
-  const categories = [
-    "all",
-    "electronics",
-    "jewelery",
-    "men's clothing",
-    "women's clothing",
-  ];
-
-  const { data, isLoading, isError, error } = useQuery<Product[], Error>({
-    queryKey: ["products", category], // unique cache per category
-    queryFn: () => fetchProductsByCategory(category), // must be a function!
-    // keepPreviousData: true,
+  // fetch category names
+  const { data, isLoading, isError, error } = useQuery<string[], Error>({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
   });
 
   if (isLoading)
-    return (
-      <div className="flex justify-center mt-20 text-xl">
-        Loading products...
-      </div>
-    );
+    return <div className="p-4 text-xl text-center">Loading categories...</div>;
 
   if (isError)
     return (
-      <div className="text-center mt-20 text-red-600 text-xl">
+      <div className="p-4 text-xl text-red-600 text-center">
         Error: {error.message}
       </div>
     );
 
   return (
-    <div className="p-4">
-      {/* Category Filter */}
-      <div className="mb-4">
-        <label className="mr-2 font-semibold">Category:</label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="border rounded p-1"
-        >
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-      </div>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Categories</h1>
 
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {data?.map((product) => (
-          <div
-            key={product.id}
-            className="border p-4 rounded shadow hover:shadow-lg transition"
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Add an "All" category */}
+        <Link
+          to="/?category=all"
+          className="p-6 border rounded shadow hover:shadow-lg transition text-center font-semibold"
+        >
+          All
+        </Link>
+
+        {data!.map((cat) => (
+          <Link
+            key={cat}
+            to={`/?category=${cat}`}
+            className="p-6 border rounded shadow hover:shadow-lg transition text-center font-semibold capitalize"
           >
-            <img
-              src={product.image}
-              alt={product.title}
-              className="h-40 mx-auto"
-            />
-            <h2 className="mt-2 font-bold">{product.title}</h2>
-            <p className="mt-1 text-gray-600">${product.price}</p>
-          </div>
+            {cat}
+          </Link>
         ))}
       </div>
     </div>

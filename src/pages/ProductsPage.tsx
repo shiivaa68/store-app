@@ -1,12 +1,18 @@
-// src/pages/ProductsPage.tsx
-
 import { useQuery } from "@tanstack/react-query";
-import { fetchProducts, type Product } from "../api/products";
+import { fetchProducts, fetchProductsByCategory, type Product } from "../api/products";
+import { useSearchParams } from "react-router-dom";
 
 export default function ProductsPage() {
+  const [params] = useSearchParams();
+  const selectedCategory = params.get("category") || "all";
+
   const { data, isLoading, isError, error } = useQuery<Product[], Error>({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
+    queryKey: ["products", selectedCategory],
+    queryFn: () =>
+      selectedCategory === "all"
+        ? fetchProducts()
+        : fetchProductsByCategory(selectedCategory),
+        
   });
 
   if (isLoading) return <div className="p-4">Loading products...</div>;

@@ -15,6 +15,14 @@ export const fetchProducts = async (): Promise<Product[]> => {
   return data;
 };
 
+
+export const fetchCategories = async (): Promise<string[]> => {
+  const { data } = await axios.get<string[]>(
+    "https://fakestoreapi.com/products/categories"
+  );
+  return data;
+};
+
 export const fetchProductsByCategory = async (
   category: string
 ): Promise<Product[]> => {

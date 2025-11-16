@@ -42,3 +42,12 @@ export const fetchProductById = async (id: number): Promise<Product> => {
   );
   return data;
 };
+
+// src/api/products.ts
+export const searchProducts = async (query: string): Promise<Product[]> => {
+  const { data } = await axios.get<Product[]>("https://fakestoreapi.com/products");
+  if (!query) return data;
+  return data.filter((product) =>
+    product.title.toLowerCase().includes(query.toLowerCase())
+  );
+};

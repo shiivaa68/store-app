@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCategories } from "../api/products";
+import { fetchCategories } from "../api/apiRoute";
 import { Link } from "react-router-dom";
 
 export default function Categories() {

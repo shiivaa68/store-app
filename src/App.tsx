@@ -1,6 +1,7 @@
 import "./App.css";
 import ProductsPage from "./pages/ProductsPage";
 import Categories from "./pages/Categories";
+import ProductDetails from "./pages/ProductDetails";
 import { Routes, Route, Link } from "react-router-dom";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ProductsPage />} />
         <Route path="/categories" element={<Categories />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Routes>
     </>
   );

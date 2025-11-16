@@ -1,3 +1,4 @@
+// src/api/products.ts
 import axios from "axios";
 
 export interface Product {
@@ -10,7 +11,18 @@ export interface Product {
 }
 
 export const fetchProducts = async (): Promise<Product[]> => {
-  const { data } = await axios.get("https://fakestoreapi.com/products");
-  console.log(data);
+  const { data } = await axios.get<Product[]>("https://fakestoreapi.com/products");
+  return data;
+};
+
+export const fetchProductsByCategory = async (
+  category: string
+): Promise<Product[]> => {
+  const url =
+    category === "all"
+      ? "https://fakestoreapi.com/products"
+      : `https://fakestoreapi.com/products/category/${category}`;
+
+  const { data } = await axios.get<Product[]>(url);
   return data;
 };

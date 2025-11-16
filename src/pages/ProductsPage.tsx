@@ -1,6 +1,7 @@
+// src/pages/ProductsPage.tsx
+
 import { useQuery } from "@tanstack/react-query";
-import { fetchProducts } from "../api/products";
-import type { Product } from "../api/products";
+import { fetchProducts, type Product } from "../api/products";
 
 export default function ProductsPage() {
   const { data, isLoading, isError, error } = useQuery<Product[], Error>({
